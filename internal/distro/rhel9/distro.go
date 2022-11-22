@@ -144,6 +144,42 @@ var distroMap = map[string]distribution{
 		runner:             "org.osbuild.centos9",
 		defaultImageConfig: defaultDistroImageConfig,
 	},
+	"alma-90": {
+		name:               "alma-90",
+		product:            "Alma Linux",
+		osVersion:          "9.0",
+		releaseVersion:     "9",
+		modulePlatformID:   "platform:el9",
+		vendor:             "almalinux",
+		ostreeRefTmpl:      "alma/9/%s/edge",
+		isolabelTmpl:       "Alma-Linux-9-0-BaseOS-%s",
+		runner:             "org.osbuild.alma9",
+		defaultImageConfig: defaultDistroImageConfig,
+	},
+	"alma-91": {
+		name:               "alma-91",
+		product:            "Alma Linux",
+		osVersion:          "9.1",
+		releaseVersion:     "9",
+		modulePlatformID:   "platform:el9",
+		vendor:             "almalinux",
+		ostreeRefTmpl:      "alma/9/%s/edge",
+		isolabelTmpl:       "Alma-Linux-9-1-BaseOS-%s",
+		runner:             "org.osbuild.alma9",
+		defaultImageConfig: defaultDistroImageConfig,
+	},
+	"rocky-90": {
+		name:               "rocky-90",
+		product:            "Rocky Linux",
+		osVersion:          "9.0",
+		releaseVersion:     "9",
+		modulePlatformID:   "platform:el9",
+		vendor:             "rocky",
+		ostreeRefTmpl:      "rocky/9/%s/edge",
+		isolabelTmpl:       "Rocky-Linux-9-0-BaseOS-%s",
+		runner:             "org.osbuild.rocky9",
+		defaultImageConfig: defaultDistroImageConfig,
+	},
 }
 
 func (d *distribution) Name() string {
@@ -671,6 +707,30 @@ func NewCentos() distro.Distro {
 
 func NewCentosHostDistro(name, modulePlatformID, ostreeRef string) distro.Distro {
 	return newDistro("centos-9")
+}
+
+func NewAlma90() distro.Distro {
+	return newDistro("alma-90")
+}
+
+func NewAlma90HostDistro(name, modulePlatformID, ostreeRef string) distro.Distro {
+	return newDistro("alma-90")
+}
+
+func NewAlma91() distro.Distro {
+	return newDistro("alma-91")
+}
+
+func NewAlma91HostDistro(name, modulePlatformID, ostreeRef string) distro.Distro {
+	return newDistro("alma-91")
+}
+
+func NewRocky90() distro.Distro {
+	return newDistro("rocky-90")
+}
+
+func NewRocky90HostDistro(name, modulePlatformID, ostreeRef string) distro.Distro {
+	return newDistro("rocky-90")
 }
 
 func newDistro(distroName string) distro.Distro {

@@ -74,6 +74,16 @@ func TestRegistry_mangleHostDistroName(t *testing.T) {
 		{"rhel-90 beta", args{"rhel-90", true, false}, "rhel-90-beta"},
 		{"rhel-90 stream", args{"rhel-90", false, true}, "rhel-90"},
 		{"rhel-90 beta stream", args{"rhel-90", true, true}, "rhel-90-beta"},
+
+		{"rocky-90", args{"rocky-90", false, false}, "rocky-90"},
+		{"rocky-90 beta", args{"rocky-90", true, false}, "rocky-90-beta"},
+		{"rocky-90 stream", args{"rocky-90", false, true}, "rocky-90"},
+		{"rocky-90 beta stream", args{"rocky-90", true, true}, "rocky-90-beta"},
+
+		{"alma-90", args{"alma-90", false, false}, "alma-90"},
+		{"alma-90 beta", args{"alma-90", true, false}, "alma-90-beta"},
+		{"alma-90 stream", args{"alma-90", false, true}, "alma-90"},
+		{"alma-90 beta stream", args{"alma-90", true, true}, "alma-90-beta"},
 	}
 
 	for _, tt := range tests {

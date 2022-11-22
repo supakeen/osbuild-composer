@@ -32,6 +32,9 @@ var supportedDistros = []supportedDistro{
 	{rhel9.NewRHEL91, rhel9.NewRHEL91HostDistro},
 	{rhel9.NewRHEL92, rhel9.NewRHEL92HostDistro},
 	{rhel9.NewCentos, rhel9.NewCentosHostDistro},
+	{rhel9.NewAlma90, rhel9.NewAlma90HostDistro},
+	{rhel9.NewAlma91, rhel9.NewAlma91HostDistro},
+	{rhel9.NewRocky90, rhel9.NewRocky90HostDistro},
 }
 
 type supportedDistro struct {
