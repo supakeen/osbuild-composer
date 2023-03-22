@@ -15,8 +15,9 @@ type PartitionTable struct {
 	Type       string // Partition table type, e.g. dos, gpt.
 	Partitions []Partition
 
-	SectorSize   uint64 // Sector size in bytes
-	ExtraPadding uint64 // Extra space at the end of the partition table (sectors)
+	SectorSize  uint64 // Sector size in bytes
+	PrePadding  uint64 // Extra space at the beginning of the partition table (sectors)
+	PostPadding uint64 // Extra space at the end of the partition table (sectors)
 }
 
 func NewPartitionTable(basePT *PartitionTable, mountpoints []blueprint.FilesystemCustomization, imageSize uint64, lvmify bool, requiredSizes map[string]uint64, rng *rand.Rand) (*PartitionTable, error) {
@@ -71,12 +72,13 @@ func (pt *PartitionTable) Clone() Entity {
 	}
 
 	clone := &PartitionTable{
-		Size:         pt.Size,
-		UUID:         pt.UUID,
-		Type:         pt.Type,
-		Partitions:   make([]Partition, len(pt.Partitions)),
-		SectorSize:   pt.SectorSize,
-		ExtraPadding: pt.ExtraPadding,
+		Size:        pt.Size,
+		UUID:        pt.UUID,
+		Type:        pt.Type,
+		Partitions:  make([]Partition, len(pt.Partitions)),
+		SectorSize:  pt.SectorSize,
+		PrePadding:  pt.PrePadding,
+		PostPadding: pt.PostPadding,
 	}
 
 	for idx, partition := range pt.Partitions {
@@ -363,7 +365,7 @@ func (pt *PartitionTable) relayout(size uint64) uint64 {
 		footer = header
 	}
 
-	start := pt.AlignUp(header)
+	start := pt.AlignUp(header) + pt.PrePadding
 	size = pt.AlignUp(size)
 
 	var rootIdx = -1
@@ -386,7 +388,7 @@ func (pt *PartitionTable) relayout(size uint64) uint64 {
 	root.Start = start
 
 	// add the extra padding specified in the partition table
-	footer += pt.ExtraPadding
+	footer += pt.PostPadding
 
 	// If the sum of all partitions is bigger then the specified size,
 	// we use that instead. Grow the partition table size if needed.
