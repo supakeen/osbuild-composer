@@ -126,6 +126,9 @@ type OSCustomizations struct {
 	// Custom directories and files to create in the image
 	Directories []*fsnode.Directory
 	Files       []*fsnode.File
+
+	// Custom files to copy around in the image
+	CopyFiles *osbuild.CopyStageOptions
 }
 
 // OS represents the filesystem tree of the target image. This roughly
@@ -628,6 +631,39 @@ func (p *OS) serialize() osbuild.Pipeline {
 
 	if len(p.Files) > 0 {
 		pipeline.AddStages(osbuild.GenFileNodesStages(p.Files)...)
+	}
+
+    /*
+	inputName := "root-tree"
+	copyOptions, copyDevices, copyMounts := osbuild.GenCopyFSTreeOptions(inputName, p.treePipeline.Name(), p.Filename, pt)
+	copyInputs := osbuild.NewPipelineTreeInputs(inputName, p.treePipeline.Name())
+	pipeline.AddStage(osbuild.NewCopyStage(copyOptions, copyInputs, copyDevices, copyMounts))
+    */
+
+    // or
+
+    /*
+	inputName := "tree"
+	copyStageOptions := &osbuild.CopyStageOptions{
+		Paths: []osbuild.CopyStagePath{
+			{
+				From: fmt.Sprintf("input://%s/boot/vmlinuz-%s", inputName, p.anacondaPipeline.kernelVer),
+				To:   "tree:///images/pxeboot/vmlinuz",
+			},
+			{
+				From: fmt.Sprintf("input://%s/boot/initramfs-%s.img", inputName, p.anacondaPipeline.kernelVer),
+				To:   "tree:///images/pxeboot/initrd.img",
+			},
+		},
+	}
+
+	copyStageInputs := osbuild.NewPipelineTreeInputs(inputName, p.anacondaPipeline.Name())
+	copyStage := osbuild.NewCopyStageSimple(copyStageOptions, copyStageInputs)
+	pipeline.AddStage(copyStage)
+    */
+
+	if p.CopyFiles != nil {
+		pipeline.AddStage(osbuild.NewCopyStage(p.CopyFiles))
 	}
 
 	enabledServices := []string{}

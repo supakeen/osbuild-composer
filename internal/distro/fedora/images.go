@@ -162,6 +162,7 @@ func osCustomizations(
 	osc.SshdConfig = imageConfig.SshdConfig
 	osc.AuthConfig = imageConfig.Authconfig
 	osc.PwQuality = imageConfig.PwQuality
+	osc.CopyFiles = imageConfig.CopyFiles
 
 	return osc
 }

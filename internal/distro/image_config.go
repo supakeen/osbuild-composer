@@ -67,6 +67,9 @@ type ImageConfig struct {
 	Firewall            *osbuild.FirewallStageOptions
 	UdevRules           *osbuild.UdevRulesStageOptions
 	GCPGuestAgentConfig *osbuild.GcpGuestAgentConfigOptions
+
+	// Allow files to be copied to non-standard locations at build time
+	CopyFiles *osbuild.CopyStageOptions
 }
 
 // InheritFrom inherits unset values from the provided parent configuration and
